@@ -1,0 +1,39 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "API",
+      "runtimeArgs": [
+        "--watch",
+        "-r",
+        "ts-node/register"
+      ],
+      "args": [
+        "${workspaceFolder}/api/api.ts"
+      ],
+      "cwd": "${workspaceFolder}/api",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "WEB",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/web",
+      "preLaunchTask": "npm: dev"
+    },
+  ],
+  "compounds": [
+    {
+      "name": "APP",
+      "configurations": [
+        "API",
+        "WEB"
+      ]
+    }
+  ]
+}
