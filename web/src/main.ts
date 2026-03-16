@@ -87,7 +87,12 @@ document.getElementById('btn-next')?.addEventListener('click', () => {
 
 ;(window as any).deleteProduct = async (id: number) => {
   if (!confirm(`Eliminar producte #${id}?`)) return
-  await fetch(`${API}/${id}`, { method: 'DELETE' })
+  const res = await fetch(`${API}/${id}`, { method: 'DELETE' })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: 'Error en eliminar el producte' }))
+    alert(err.error || 'Error en eliminar el producte')
+    return
+  }
   loadProducts()
 }
 
@@ -107,11 +112,16 @@ document.getElementById('create-form')!.addEventListener('submit', async (e) => 
   const form = e.target as HTMLFormElement
   const nom = (form.elements.namedItem('nom') as HTMLInputElement).value
   const preu = (form.elements.namedItem('preu') as HTMLInputElement).value
-  await fetch(API, {
+  const res = await fetch(API, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ product_name: nom, unit_price: Number(preu) })
   })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: 'Error en crear el producte' }))
+    alert(err.error || 'Error en crear el producte')
+    return
+  }
   form.reset()
   loadProducts()
 })
