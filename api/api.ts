@@ -91,7 +91,7 @@ router.delete('/products/:id', async (req, res, next) => {
     const id = Number(req.params.id)
 
     const updatedCount = await db.query('products').where('product_id', id).update({ discontinued: 1 })
-
+    
     if (!updatedCount) return res.status(404).json({ error: 'No trobat' })
 
     res.status(204).send()
